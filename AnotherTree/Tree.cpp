@@ -22,11 +22,14 @@ class Tree
 
         void add_element(int value)
         {
+
             if(this -> contains(value))
             {
                 return;
             }
 
+            values.push_back(value);
+            std::sort(values.begin(), values.end());
         }
 
         void remove_element(int value) {}
@@ -39,8 +42,6 @@ class Tree
                 {
                     return true;
                 }
-
-
             }
             return false;
         }
@@ -48,6 +49,23 @@ class Tree
         std::vector<Node*> nodify(std::vector<int> values)
         {
             size_t num_of_nodes = ceil(values.size() / max_num_of_elems);
+            std::vector<Node*> new_nodes;
+            for(int i = 0; i < num_of_nodes; i++)
+            {
+                Node *new_node = new Node(max_num_of_elems);
+                new_nodes.push_back(new_node);
+            }
+        }
+
+        void populate_nodes(std::vector<Node*> higher_nodes, std::vector<Node*> lower_nodes, std::vector<int> values)
+        {
+            size_t available_nodes = higher_nodes.size();
+            size_t available_num_of_elems = values.size();
+            for(int i = 0; i < available_nodes; i++)
+            {
+                size_t num_of_elems_to_add = floor(available_nodes / available_num_of_elems);
+
+            }
         }
 
 

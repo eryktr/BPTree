@@ -2,6 +2,9 @@
 #include <vector>
 #include <utility>
 #include <cmath>
+#include <algorithm>
+#include <iostream>
+#include <string>
 struct Node
 {
     std::vector<std::pair<int, Node*>> fields;
