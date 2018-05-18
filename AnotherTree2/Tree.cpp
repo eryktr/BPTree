@@ -23,17 +23,15 @@ class Tree
 
         void add_element(int value)
         {
-
+            std::cout << "Adding " << value << std::endl << std::endl;
             if(this -> contains(value))
             {
                 return;
             }
-            std::cout << "1" << std::endl;
             values.push_back(value);
             std::sort(values.begin(), values.end());
-            std::cout << "2" << std::endl;
             root = nodify(values);
-            std::cout << value << " added";
+            std::cout << value << " added" << std::endl;
         }
 
 
@@ -61,19 +59,15 @@ class Tree
             do
             {
                 std::vector<Node*> new_nodes;
-                std::cout << "7" << std::endl;
                 for(int i = 0; i < num_of_nodes; i++)
                 {
                     Node *new_node = new Node(max_num_of_elems);
-                    new_nodes.push_back(new_node);
+                    (new_nodes).push_back(new_node);
                 }
-                std::cout << "8" << std::endl;
                 populate_nodes(&new_nodes, previous_level, values_to_insert);
-                std::cout << "9" << std::endl;
                 previous_level = &new_nodes;
-                std::cout << "10" << std::endl;
+                std::cout << "value in previous level:  " << ((*previous_level).at(0)->get_value(0)) << std::endl;
                 values_to_insert = update_values_vector(*previous_level);
-                std::cout << "11" << std::endl;
                 num_of_nodes = ceil(1.0 * values_to_insert.size() / max_num_of_elems);
             }
             while(num_of_nodes > 1);
@@ -88,7 +82,7 @@ class Tree
             size_t available_num_of_elems = values.size();
             for(int i = 0; i < available_nodes; i++)
             {
-                size_t num_of_elems_to_add = floor(1.0 * available_nodes / available_num_of_elems);
+                size_t num_of_elems_to_add = floor(1.0 * available_num_of_elems / available_nodes);
                 for(int j = 0; j < num_of_elems_to_add; j++)
                 {
                     int value_to_add = values[j];
@@ -96,6 +90,7 @@ class Tree
                     if(lower_nodes == nullptr)
                     {
                         target_node -> add_field(value_to_add, nullptr);
+                        std::cout << value_to_add << "pushed into node" << std::endl;
                         available_num_of_elems--;
                         if(target_node -> get_num_of_fields() >= num_of_elems_to_add)
                         {
@@ -107,13 +102,13 @@ class Tree
                         Node *pointer = find_pointer(lower_nodes, value_to_add);
                         {
                             target_node -> add_field(value_to_add, pointer);
+                            std::cout << value_to_add << "pushed into node" << std::endl;
                             available_num_of_elems--;
                             if(target_node -> get_num_of_fields() >= num_of_elems_to_add)
                             {
                                 available_nodes--;
                             }
                         }
-
                     }
                 }
             }
@@ -147,11 +142,15 @@ class Tree
 
         std::vector<int> update_values_vector(std::vector<Node*> previous_nodes)
         {
+            std::cout << "Previous value is: " << (previous_nodes[0])->get_value(0);
+            std::cout <<"notorious function entered" << std::endl;
             std::vector<int> new_values;
 
+            std::cout << "The size of the previous node vector is: " << previous_nodes.size() << std::endl;
             for(int i = 0; i < previous_nodes.size(); i++)
             {
                 new_values.push_back(previous_nodes.at(i) -> get_value(0));
+                std::cout << previous_nodes.at(i) -> get_value(0) << std::endl;
             }
             return new_values;
         }
