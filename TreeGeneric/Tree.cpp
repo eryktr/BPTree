@@ -1,20 +1,20 @@
 #include "Node.cpp"
-
+template <class T>
 class Tree
 {
     private:
-        std::vector<int> values;
+        std::vector<T> values;
         size_t max_num_of_elems;
-        Node* root;
+        Node<T>* root;
 
     public:
-        Tree(size_t max_num_of_elems)
+        Tree<T>(size_t max_num_of_elems)
         {
             this -> max_num_of_elems = max_num_of_elems;
-            root = new Node(max_num_of_elems);
+            root = new Node<T>(max_num_of_elems);
         }
 
-        void add_element(int value)
+        void add_element(T value)
         {
             if(this -> contains(value))
             {
@@ -27,11 +27,11 @@ class Tree
         }
 
 
-        void remove_element(int value)
+        void remove_element(T value)
         {
             if(!contains(value))
             {
-                std::cout << "Element not found in tree." << std::endl;
+                std::cout << "Element not found in the tree." << std::endl;
                 return;
             }
             else
@@ -51,7 +51,7 @@ class Tree
         }
 
 
-        bool contains(int value)
+        bool contains(T value)
         {
             for(int i = 0; i < values.size(); i++)
             {
@@ -64,20 +64,20 @@ class Tree
         }
 
 
-        Node* nodify(std::vector<int> values)
+        Node<T>* nodify(std::vector<T> values)
         {
             int drawing_helper = 0;
 
             std::sort(values.begin(), values.end());
             size_t num_of_nodes = ceil(1.0 * values.size() / max_num_of_elems);
-            std::vector<Node*> previous_level;
-            std::vector<int> values_to_insert = values;
+            std::vector<Node<T>*> previous_level;
+            std::vector<T> values_to_insert = values;
             do
             {
-                std::vector<Node*> new_nodes;
+                std::vector<Node<T>*> new_nodes;
                 for(int i = 0; i < num_of_nodes; i++)
                 {
-                    Node *new_node = new Node(max_num_of_elems);
+                    Node<T> *new_node = new Node<T>(max_num_of_elems);
                     (new_nodes).push_back(new_node);
                 }
                 populate_nodes(new_nodes, previous_level, values_to_insert);
@@ -96,9 +96,9 @@ class Tree
                     drawing_helper++;
                 }
                 std::cout << std::endl << std::endl;
-                std::vector<Node *> copy_new_nodes = new_nodes;
+                std::vector<Node<T> *> copy_new_nodes = new_nodes;
                 previous_level = copy_new_nodes;
-                std::vector<int> updated_values = update_values_vector(previous_level);
+                std::vector<T> updated_values = update_values_vector(previous_level);
                 values_to_insert = updated_values;
                 num_of_nodes = (num_of_nodes == 1) ? 0 : ceil(1.0 * values_to_insert.size() / max_num_of_elems);
             }
@@ -108,7 +108,7 @@ class Tree
         }
 
 
-        void populate_nodes(std::vector<Node*> higher_nodes, std::vector<Node*> lower_nodes, std::vector<int> values)
+        void populate_nodes(std::vector<Node<T> *> higher_nodes, std::vector<Node<T>*> lower_nodes, std::vector<T> values)
         {
             size_t initial_available_nodes = higher_nodes.size();
             size_t available_num_of_elems = values.size();
@@ -119,8 +119,8 @@ class Tree
 
                 for(int j = 0; j < num_of_elems_to_add; j++)
                 {
-                    int value_to_add = values.front();
-                    Node *target_node = find_free_node(higher_nodes, num_of_elems_to_add);
+                    T value_to_add = values.front();
+                    Node<T> *target_node = find_free_node(higher_nodes, num_of_elems_to_add);
                     if(lower_nodes.empty())
                     {
                         target_node -> add_field(value_to_add, nullptr);
@@ -134,7 +134,7 @@ class Tree
                     }
                     else
                     {
-                        Node *pointer = find_pointer(lower_nodes, value_to_add);
+                        Node<T> *pointer = find_pointer(lower_nodes, value_to_add);
                         target_node -> add_field(value_to_add, pointer);
                         available_num_of_elems--;
                         if(target_node -> get_num_of_fields() >= num_of_elems_to_add)
@@ -150,7 +150,7 @@ class Tree
         }
 
 
-        Node* find_free_node(std::vector<Node *> nodes, int max_capacity)
+        Node<T>* find_free_node(std::vector<Node<T>*> nodes, int max_capacity)
         {
             for(int i = 0; i < nodes.size(); i++)
             {
@@ -161,7 +161,7 @@ class Tree
             }
         }
 
-        Node* find_pointer(std::vector<Node *> nodes, int value)
+        Node<T>* find_pointer(std::vector<Node<T> *> nodes, T value)
         {
             for(int i = 0; i < nodes.size(); i++)
             {
@@ -172,9 +172,9 @@ class Tree
             }
         }
 
-        std::vector<int> update_values_vector(std::vector<Node*> previous_nodes)
+        std::vector<T> update_values_vector(std::vector<Node<T>*> previous_nodes)
         {
-            std::vector<int> new_values;
+            std::vector<T> new_values;
 
             for(int i = 0; i < previous_nodes.size(); i++)
             {
@@ -187,12 +187,8 @@ class Tree
             return new_values;
         }
 
-        void draw_tree(Node *arg)
-        {
 
-        }
-
-        Node* get_root()
+        Node<T>* get_root()
         {
             return root;
         }

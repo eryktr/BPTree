@@ -11,7 +11,8 @@ int main()
     t -> add_element(50);
     t -> add_element(70);
     t  -> add_element(92);
-    t -> add_element(15);
+    t -> add_element(38);
+    t -> add_element(42);
 
 
 
