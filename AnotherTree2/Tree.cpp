@@ -74,12 +74,13 @@ class Tree
 
         Node* nodify(std::vector<int> values)
         {
+            std::sort(values.begin(), values.end());
             size_t num_of_nodes = ceil(1.0 * values.size() / max_num_of_elems);
             std::vector<Node*> *previous_level = nullptr;
             std::vector<int> values_to_insert = values;
             do
             {
-                std::cout << num_of_nodes << "nodes created";
+                std::cout << num_of_nodes << "nodes created" << std::endl;
                 std::vector<Node*> new_nodes;
                 for(int i = 0; i < num_of_nodes; i++)
                 {
@@ -104,7 +105,6 @@ class Tree
             size_t initial_available_nodes = (*higher_nodes).size();
             size_t available_num_of_elems = values.size();
             size_t available_nodes = initial_available_nodes;
-
             for(int i = 0; i < initial_available_nodes; i++)
             {
                 size_t num_of_elems_to_add = floor(1.0 * available_num_of_elems / available_nodes);
@@ -116,9 +116,8 @@ class Tree
                     Node *target_node = find_free_node(higher_nodes, num_of_elems_to_add);
                     if(lower_nodes == nullptr)
                     {
-                        std::cout << "I got here. j = " << j << std::endl;
                         target_node -> add_field(value_to_add, nullptr);
-                        std::cout << value_to_add << "pushed into node" << std::endl;
+                        std::cout << value_to_add << "pushed" << std::endl;
                         available_num_of_elems--;
                         if(target_node -> get_num_of_fields() >= num_of_elems_to_add)
                         {
@@ -141,6 +140,7 @@ class Tree
                     }
 
                 }
+                previous_num_of_elems_to_add = num_of_elems_to_add;
             }
         }
 
@@ -149,8 +149,9 @@ class Tree
         {
             for(int i = 0; i < (*nodes).size(); i++)
             {
-                if((*nodes).at(i)->current_num_of_elems < max_capacity)
+                if((*nodes).at(i) -> current_num_of_elems < max_num_of_elems && (*nodes).at(i)->current_num_of_elems < max_capacity)
                 {
+                    std::cout << "Node number " << i << "returned." << std::endl;
                     return (*nodes).at(i);
                 }
             }
@@ -159,16 +160,17 @@ class Tree
         Node* find_pointer(std::vector<Node *> *nodes, int value)
         {
             std::cout << "Looking for pointer for " << value << std::endl;
+            std::cout << "We have " << (*nodes).size() << "nodes" <<std::endl;
             for(int i = 0; i < (*nodes).size(); i++)
             {
                 std::cout << "This time i = " << i << std::endl;
-                std::cout << "Size of nodes: " << (*nodes).size();
-                if(i < (*nodes).at(i) -> current_num_of_elems && (*nodes).at(i) -> get_value(0) == value)
+                if(i < (*nodes).at(i) -> current_num_of_elems  && (*nodes).at(i) -> get_value(0) == value)
                 {
                     std::cout << "Got it!";
                     return (*nodes).at(i);
                 }
             }
+            std::cout << "Not found:(";
         }
 
         std::vector<int> update_values_vector(std::vector<Node*> previous_nodes)
@@ -189,6 +191,11 @@ class Tree
         Node* get_root()
         {
             return root;
+        }
+
+        ~Tree()
+        {
+            delete(root);
         }
 
 
